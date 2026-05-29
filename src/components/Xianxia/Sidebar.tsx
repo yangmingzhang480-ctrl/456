@@ -1,0 +1,55 @@
+import type { PanelId } from './FakeData';
+import { DashboardIcon, ChatIcon, InventoryIcon, MapIcon, NpcIcon, RecordsIcon, SettingsIcon } from './Icons';
+
+interface SidebarProps {
+  activePanel: PanelId;
+  onPanelChange: (id: PanelId) => void;
+}
+
+interface NavItem {
+  id: PanelId;
+  label: string;
+  Icon: typeof DashboardIcon;
+}
+
+const NAV_ITEMS: NavItem[] = [
+  { id: 'dashboard', label: '命盘主控台', Icon: DashboardIcon },
+  { id: 'chat', label: '天机推演', Icon: ChatIcon },
+  { id: 'inventory', label: '储物须弥', Icon: InventoryIcon },
+  { id: 'map', label: '玄灵界舆图', Icon: MapIcon },
+  { id: 'npc', label: '因果缘法', Icon: NpcIcon },
+  { id: 'records', label: '轮回秘录', Icon: RecordsIcon },
+  { id: 'settings', label: '天道法则', Icon: SettingsIcon },
+];
+
+export function Sidebar({ activePanel, onPanelChange }: SidebarProps) {
+  return (
+    <nav className="xianxia-sidebar" aria-label="主菜单">
+      <div className="sidebar-header">
+        <span className="sidebar-title">玄灵</span>
+        <span className="sidebar-subtitle">元极天</span>
+      </div>
+      <div className="sidebar-divider" />
+      <ul className="sidebar-nav">
+        {NAV_ITEMS.map(({ id, label, Icon }) => (
+          <li key={id}>
+            <button
+              id={`nav-${id}`}
+              className={`sidebar-item${activePanel === id ? ' sidebar-item--active' : ''}`}
+              onClick={() => onPanelChange(id)}
+              title={label}
+            >
+              <Icon className="sidebar-icon" />
+              <span className="sidebar-label">{label}</span>
+              {activePanel === id && <span className="sidebar-active-indicator" />}
+            </button>
+          </li>
+        ))}
+      </ul>
+      <div className="sidebar-footer">
+        <div className="sidebar-divider" />
+        <div className="sidebar-version">元极 · 轮回</div>
+      </div>
+    </nav>
+  );
+}

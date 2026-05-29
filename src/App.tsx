@@ -1,5 +1,5 @@
-import { GameView } from './components/SillyTavern/GameView';
+import { XianxiaLayout } from './components/Xianxia/XianxiaLayout';
 
 export default function App() {
-  return <GameView />;
+  return <XianxiaLayout />;
 }

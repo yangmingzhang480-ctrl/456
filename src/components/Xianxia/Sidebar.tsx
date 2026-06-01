@@ -1,5 +1,5 @@
 import type { PanelId } from './FakeData';
-import { DashboardIcon, ChatIcon, InventoryIcon, MapIcon, NpcIcon, RecordsIcon, SettingsIcon } from './Icons';
+import { DashboardIcon, ChatIcon, TavernIcon, InventoryIcon, MapIcon, NpcIcon, RecordsIcon, SettingsIcon } from './Icons';
 
 interface SidebarProps {
   activePanel: PanelId;
@@ -15,6 +15,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { id: 'dashboard', label: '命盘主控台', Icon: DashboardIcon },
   { id: 'chat', label: '天机推演', Icon: ChatIcon },
+  { id: 'tavern', label: '酒馆模式', Icon: TavernIcon },
   { id: 'inventory', label: '储物须弥', Icon: InventoryIcon },
   { id: 'map', label: '玄灵界舆图', Icon: MapIcon },
   { id: 'npc', label: '因果缘法', Icon: NpcIcon },

@@ -1492,6 +1492,275 @@ legend {
   }
 }
 
+/* ===== SillyTavern GameView — 酒馆模式 ===== */
+.st-gameview {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 32px 40px;
+  min-height: 100vh;
+  animation: fade-in-up 0.4s ease;
+}
+
+.st-gameview-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.st-gameview-toolbar button {
+  padding: 8px 14px;
+  font-size: 13px;
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: var(--font-sc);
+  letter-spacing: 0.05em;
+}
+
+.st-gameview-toolbar button:hover {
+  border-color: var(--border-glow);
+  color: var(--text-primary);
+  box-shadow: 0 0 12px rgba(184, 134, 11, 0.12);
+}
+
+.st-gameview-toolbar button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.st-gameview .badge {
+  display: inline-block;
+  margin-left: 6px;
+  min-width: 18px;
+  padding: 0 5px;
+  background: var(--accent-gold-dim);
+  color: var(--accent-gold-bright);
+  border-radius: 9px;
+  font-size: 11px;
+  line-height: 18px;
+  text-align: center;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+/* ===== MainTextPane — 正文面板 ===== */
+.st-maintext {
+  font-family: var(--font-sc);
+  font-size: 17px;
+  line-height: 2;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  padding: 24px 0;
+  min-height: 200px;
+  letter-spacing: 0.02em;
+  position: relative;
+}
+
+.st-maintext--streaming {
+  border-left: 3px solid var(--accent-gold);
+  padding-left: 20px;
+  margin-left: -23px;
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.st-maintext--static {
+  border-left: 2px solid transparent;
+  padding-left: 20px;
+  margin-left: -22px;
+}
+
+.st-maintext-empty {
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
+  padding: 60px 0;
+  font-size: 16px;
+  letter-spacing: 0.1em;
+}
+
+/* ===== OptionList — 选项列表 ===== */
+.st-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.st-option-btn {
+  text-align: left;
+  padding: 14px 20px;
+  font-family: var(--font-sc);
+  font-size: 15px;
+  background: linear-gradient(135deg, rgba(184, 134, 11, 0.06), transparent);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  letter-spacing: 0.03em;
+}
+
+.st-option-btn:hover:not(:disabled) {
+  border-color: var(--border-gold);
+  background: linear-gradient(135deg, rgba(184, 134, 11, 0.15), rgba(184, 134, 11, 0.04));
+  transform: translateX(8px);
+  box-shadow: 0 0 20px rgba(184, 134, 11, 0.1);
+  color: var(--accent-gold-bright);
+}
+
+.st-option-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.st-options-free-input {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.st-options-free-input input {
+  flex: 1;
+  padding: 12px 16px;
+  font-family: var(--font-sc);
+  font-size: 15px;
+  background: var(--bg-parchment);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  transition: all var(--transition-fast);
+}
+
+.st-options-free-input input:focus {
+  border-color: var(--accent-gold-bright);
+  box-shadow: 0 0 20px rgba(184, 134, 11, 0.15);
+}
+
+.st-options-free-input button {
+  padding: 12px 20px;
+  font-family: var(--font-sc);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent-gold-bright);
+  background: linear-gradient(135deg, rgba(184, 134, 11, 0.15), rgba(139, 92, 246, 0.1));
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-base);
+  letter-spacing: 0.05em;
+}
+
+.st-options-free-input button:hover {
+  box-shadow: 0 0 20px rgba(184, 134, 11, 0.2);
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+}
+
+/* ===== Summary fold ===== */
+.st-summary-fold {
+  margin-top: 24px;
+}
+
+.st-summary-fold summary {
+  font-size: 14px;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 6px 0;
+  letter-spacing: 0.05em;
+  transition: color var(--transition-fast);
+}
+
+.st-summary-fold summary:hover {
+  color: var(--accent-purple-bright);
+}
+
+.st-summary-fold p {
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-top: 6px;
+  border-left: 2px solid var(--border-purple);
+}
+
+/* ===== SillyTavern Modal Overrides — 模态框酒馆化 ===== */
+.st-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 1, 5, 0.85);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fade-in 0.2s ease;
+}
+
+.st-modal {
+  background: linear-gradient(180deg, var(--bg-panel) 0%, var(--bg-abyss) 100%);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  max-width: 680px;
+  width: 90vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 0 60px rgba(184, 134, 11, 0.1), 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: fade-in-up 0.3s ease;
+}
+
+.st-modal h2 {
+  font-family: var(--font-sc);
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--accent-gold-bright);
+  letter-spacing: 0.08em;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.st-modal button {
+  font-family: var(--font-sc);
+}
+
+.st-modal input,
+.st-modal textarea,
+.st-modal select {
+  font-family: var(--font-sc);
+}
+
+/* Toast */
+.st-toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 12px 24px;
+  background: var(--frost-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-md);
+  color: var(--accent-gold-bright);
+  font-family: var(--font-sc);
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  animation: toast-slide-down 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  transition: opacity 0.3s ease;
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
   .xianxia-sidebar {

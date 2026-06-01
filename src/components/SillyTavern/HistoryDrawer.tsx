@@ -5,37 +5,39 @@ export function HistoryDrawer({ onClose }: { onClose: () => void }) {
   const messages = st.activeChat?.messages ?? [];
 
   return (
-    <div
-      onClick={onClose}
-      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.4)', zIndex: 100 }}
-    >
-      <aside
-        onClick={e => e.stopPropagation()}
-        style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 360,
-                 background: '#fff', overflowY: 'auto', padding: 16 }}
-      >
-        <header style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
-          <strong>历史楼层</strong>
-          <button onClick={onClose}>×</button>
+    <div className="st-history-overlay" onClick={onClose}>
+      <aside className="st-history-panel" onClick={e => e.stopPropagation()}>
+        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+          <h2 style={{ margin: 0, fontFamily: 'var(--font-sc)', fontSize: 18, color: 'var(--accent-gold-bright)', letterSpacing: '0.08em' }}>
+            📜 因果长河
+          </h2>
+          <button onClick={onClose} style={{ fontSize: 18, padding: '4px 10px' }}>×</button>
         </header>
-        <ol style={{ listStyle: 'none', padding: 0 }}>
+        <div className="st-history-list">
           {messages.map((m, i) => {
             const summary = m.role === 'assistant'
               ? (m.parsed?.maintext ?? m.content).slice(0, 60)
               : m.content.slice(0, 60);
             return (
-              <li key={m.id} style={{ borderBottom: '1px solid #eee', padding: 8 }}>
-                <div style={{ fontSize: 12, color: '#888' }}>#{i} · {m.role} · {new Date(m.timestamp).toLocaleTimeString()}</div>
-                <div style={{ fontSize: 14, marginTop: 4 }}>{summary}…</div>
-                <div style={{ marginTop: 8, display: 'flex', gap: 8 }}>
-                  <button onClick={() => { st.jumpToFloor(m.id); onClose(); }}>跳转</button>
-                  <button onClick={() => { const t = prompt('编辑内容', m.content); if (t != null) st.editMessage(m.id, t); }}>编辑</button>
-                  <button onClick={() => st.rollbackTo(m.id)}>删后续</button>
+              <div key={m.id} className="st-history-item">
+                <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 4 }}>
+                  #{i} · {m.role === 'user' ? '你' : '天机'} · {new Date(m.timestamp).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
                 </div>
-              </li>
+                <div style={{ fontSize: 14, color: 'var(--text-primary)' }}>{summary}…</div>
+                <div style={{ marginTop: 8, display: 'flex', gap: 6 }}>
+                  <button onClick={() => { st.jumpToFloor(m.id); onClose(); }}>⤴ 回溯</button>
+                  <button onClick={() => { const t = prompt('编辑内容', m.content); if (t != null) st.editMessage(m.id, t); }}>✎ 编辑</button>
+                  <button onClick={() => st.rollbackTo(m.id)}>✕ 截断</button>
+                </div>
+              </div>
             );
           })}
-        </ol>
+          {messages.length === 0 && (
+            <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: 40 }}>
+              尚无线索，叩问天机以开启因果…
+            </div>
+          )}
+        </div>
       </aside>
     </div>
   );

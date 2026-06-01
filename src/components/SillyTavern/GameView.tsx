@@ -12,25 +12,7 @@ import { Toast } from './Toast';
 
 function Badge({ count }: { count: number }) {
   if (count <= 0) return null;
-  return (
-    <span
-      style={{
-        display: 'inline-block',
-        marginLeft: 6,
-        minWidth: 18,
-        padding: '0 5px',
-        background: '#2c8',
-        color: '#fff',
-        borderRadius: 9,
-        fontSize: 11,
-        lineHeight: '18px',
-        textAlign: 'center',
-        fontWeight: 'bold',
-      }}
-    >
-      {count}
-    </span>
-  );
+  return <span className="badge">{count}</span>;
 }
 
 export function GameView() {
@@ -57,12 +39,12 @@ export function GameView() {
       };
 
   return (
-    <div className="st-gameview" style={{ maxWidth: 720, margin: '0 auto', padding: 16 }}>
-      <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
+    <div className="st-gameview xianxia-panel">
+      <div className="st-gameview-toolbar">
         <button onClick={() => setHistoryOpen(true)}>
           ☰ 历史<Badge count={messageCount} />
         </button>
-        <button onClick={() => st.openSettings()}>⚙ 设置</button>
+        <button onClick={() => st.openSettings()}>⚙ 天道法则</button>
         <button onClick={() => st.openLorebooks()}>
           📖 世界书<Badge count={lorebookCount} />
         </button>
@@ -70,7 +52,9 @@ export function GameView() {
         <button onClick={() => st.openVariables()}>
           📊 变量<Badge count={variableCount} />
         </button>
-        <button disabled={!lastAssistant} onClick={() => st.regenerateLast()}>↻ 重 roll</button>
+        <button disabled={!lastAssistant || isStreaming} onClick={() => st.regenerateLast()}>
+          ↻ 重演天机
+        </button>
       </div>
 
       <ThinkingFold text={display.thinking} mode={st.settings?.thinkingDisplay ?? 'fold'} />
@@ -78,8 +62,8 @@ export function GameView() {
       <OptionList options={display.options} disabled={isStreaming} onPick={(text) => st.sendGameMessage(text)} />
 
       {display.sum && (
-        <details style={{ marginTop: 24, color: '#666' }}>
-          <summary>📜 总结</summary>
+        <details className="st-summary-fold">
+          <summary>📜 天机总结</summary>
           <p>{display.sum}</p>
         </details>
       )}

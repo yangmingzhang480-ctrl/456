@@ -91,6 +91,20 @@ export function RecordsIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function TavernIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <Svg {...props}>
+      <path d="M3 21v-9a9 9 0 0 1 18 0v9" />
+      <path d="M3 21h18" />
+      <line x1="8" y1="14" x2="10" y2="14" />
+      <line x1="14" y1="14" x2="16" y2="14" />
+      <line x1="8" y1="17" x2="10" y2="17" />
+      <line x1="14" y1="17" x2="16" y2="17" />
+      <circle cx="12" cy="7" r="2" fill="currentColor" stroke="none" opacity="0.3" />
+    </Svg>
+  );
+}
+
 export function SettingsIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <Svg {...props}>

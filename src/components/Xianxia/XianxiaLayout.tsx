@@ -3,8 +3,9 @@ import { useSillytavern } from '../../hooks/useSillytavern';
 import { XianxiaContext } from './XianxiaContext';
 import { AbyssBackground } from './AbyssBackground';
 import { ToastProvider, usePremiumToast } from './ToastSystem';
-import { PremiumDrawer, PremiumModal } from './PremiumDrawer';
+import { PremiumDrawer } from './PremiumDrawer';
 import { MonitorPanel, CharacterDrawerContent, type CharacterProfile } from './MonitorPanel';
+import { CharacterInventoryPanel, ALL_CHAR_DATA } from './CharacterInventoryPanel';
 import { DualMapPanel, type RealmNode, type SceneLocation, type CharPosition } from './DualMapPanel';
 import { Sidebar } from './Sidebar';
 import { ChatPanel } from './ChatPanel';
@@ -19,7 +20,7 @@ import { PresetModal } from '../SillyTavern/PresetModal';
 import { VariablesModal } from '../SillyTavern/VariablesModal';
 import { HistoryDrawer } from '../SillyTavern/HistoryDrawer';
 import { DEFAULT_LOREBOOKS, DEFAULT_XIANXIA_PRESET } from './DefaultWorldData';
-import { FAKE_ATTRIBUTES, FAKE_REALMS, FAKE_CHARACTER, type PanelId } from './FakeData';
+import type { PanelId } from './FakeData';
 
 /* ---- World data for maps ---- */
 const REALMS: RealmNode[] = [
@@ -57,6 +58,7 @@ const CHARACTERS: CharacterProfile[] = [
 function renderPanel(panel: PanelId, extra: { historyOpen: boolean; setHistoryOpen: (v: boolean) => void; onOpenDrawer: (c: React.ReactNode) => void; }) {
   switch (panel) {
     case 'dashboard': return <MonitorPanel characters={CHARACTERS} onSelect={c => extra.onOpenDrawer(<CharacterDrawerContent char={c} />)} />;
+    case 'characters': return <CharacterInventoryPanel characters={ALL_CHAR_DATA} />;
     case 'chat': return <ChatPanel historyOpen={extra.historyOpen} setHistoryOpen={extra.setHistoryOpen} addNotification={() => {}} />;
     case 'tavern': return <GameView />;
     case 'inventory': return <InventoryPanel />;

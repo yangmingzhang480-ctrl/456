@@ -1,5 +1,6 @@
 import type { PanelId } from './FakeData';
 import { DashboardIcon, ChatIcon, TavernIcon, InventoryIcon, MapIcon, NpcIcon, RecordsIcon, SettingsIcon } from './Icons';
+import { MonitorNavIcon, MapNavIcon, SkillsNavIcon, InventoryNavIcon, ChatNavIcon, SettingsNavIcon } from './PremiumIcons';
 
 interface SidebarProps {
   activePanel: PanelId;
@@ -13,14 +14,15 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { id: 'dashboard', label: '命盘主控台', Icon: DashboardIcon },
-  { id: 'chat', label: '天机推演', Icon: ChatIcon },
+  { id: 'dashboard', label: '轮回监控台', Icon: MonitorNavIcon },
+  { id: 'characters', label: '轮回者详情', Icon: DashboardIcon },
+  { id: 'map', label: '玄灵双轨舆图', Icon: MapNavIcon },
+  { id: 'chat', label: '天机推演', Icon: ChatNavIcon },
   { id: 'tavern', label: '酒馆模式', Icon: TavernIcon },
-  { id: 'inventory', label: '储物须弥', Icon: InventoryIcon },
-  { id: 'map', label: '玄灵界舆图', Icon: MapIcon },
+  { id: 'inventory', label: '须弥纳戒', Icon: InventoryNavIcon },
   { id: 'npc', label: '因果缘法', Icon: NpcIcon },
   { id: 'records', label: '轮回秘录', Icon: RecordsIcon },
-  { id: 'settings', label: '天道法则', Icon: SettingsIcon },
+  { id: 'settings', label: '天道法则', Icon: SettingsNavIcon },
 ];
 
 export function Sidebar({ activePanel, onPanelChange }: SidebarProps) {

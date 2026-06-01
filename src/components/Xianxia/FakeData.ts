@@ -32,7 +32,7 @@ export interface NotificationItem {
   duration?: number;
 }
 
-export type PanelId = 'dashboard' | 'chat' | 'tavern' | 'inventory' | 'map' | 'npc' | 'records' | 'settings';
+export type PanelId = 'dashboard' | 'characters' | 'chat' | 'tavern' | 'inventory' | 'map' | 'npc' | 'records' | 'settings';
 
 export const FAKE_CHARACTER = {
   name: '陆星遥',

@@ -5,6 +5,7 @@ import { SettingsIcon, ChatIcon, InventoryIcon, NpcIcon } from './Icons';
 import { ImportIcon, BookIcon, ExportIcon, RestoreIcon } from './PremiumIcons';
 import { usePremiumToast } from './ToastSystem';
 import { PremiumModal } from './PremiumDrawer';
+import { getPresetCatalog, loadWorldFile } from '../../sillytavern/preset-loader';
 
 export function SettingsPanel() {
   const { openSettings, openLorebooks, openPresets, openVariables } = useXianxia();
@@ -95,6 +96,51 @@ export function SettingsPanel() {
             {importStatus.msg}
           </div>
         )}
+      </div>
+
+      <div className="section-heading-premium">已导入的酒馆世界书</div>
+      <div style={{ maxWidth: 660, marginBottom: 36 }}>
+        <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 12, lineHeight: 1.8 }}>
+          以下世界书已从 SillyTavern 酒馆导入，点击即可加载到天道法则中：
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {getPresetCatalog().worlds.map(w => (
+            <div key={w.name} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px',
+              background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)' }}>
+              <span style={{ flex: 1, fontSize: 13, color: 'var(--text-primary)', fontFamily: 'var(--font-sc)' }}>{w.name}</span>
+              <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{w.size}</span>
+              <button className="btn-premium btn-premium--primary" style={{ fontSize: 11, padding: '4px 12px' }} id={`import-world-${w.name}`}
+                onClick={async () => {
+                  try {
+                    const { name, entryCount } = await loadWorldFile(w.path);
+                    showToast('success', '世界书已加载', `「${name}」— ${entryCount} 条天道法则`);
+                  } catch { showToast('danger', '加载失败', `无法读取「${w.name}」`); }
+                }}>加载</button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="section-heading-premium">已导入的酒馆预设</div>
+      <div style={{ maxWidth: 660, marginBottom: 36 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          {(['sysprompt', 'context', 'instruct', 'reasoning'] as const).map(cat => (
+            <div key={cat}>
+              <div style={{ fontSize: 12, color: 'var(--accent-gold-bright)', marginBottom: 6, fontFamily: 'var(--font-sc)', letterSpacing: '0.04em' }}>
+                {cat === 'sysprompt' ? '系统提示词' : cat === 'context' ? '上下文模板' : cat === 'instruct' ? '指令模板' : '推理预设'}
+              </div>
+              {getPresetCatalog()[cat].slice(0, 5).map(p => (
+                <div key={p.name} style={{ fontSize: 12, color: 'var(--text-dim)', padding: '2px 0', display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--border-gold)', flexShrink: 0 }} />
+                  {p.name}
+                </div>
+              ))}
+              {getPresetCatalog()[cat].length > 5 && (
+                <div style={{ fontSize: 11, color: 'var(--text-muted)', paddingLeft: 11 }}>+{getPresetCatalog()[cat].length - 5} 更多…</div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="section-heading-premium">世界重置</div>

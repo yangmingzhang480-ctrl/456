@@ -1,0 +1,272 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700;900&display=swap');
+
+:root {
+  --xl-bg: #030105;
+  --xl-void: #07030d;
+  --xl-surface: rgba(15, 11, 26, 0.78);
+  --xl-surface-2: rgba(23, 16, 36, 0.82);
+  --xl-gold: #d4af37;
+  --xl-gold-soft: rgba(212, 175, 55, 0.36);
+  --xl-gold-faint: rgba(212, 175, 55, 0.1);
+  --xl-jade: #42d99c;
+  --xl-blood: #c43b3b;
+  --xl-blood-strong: #ff5b5b;
+  --xl-ice: #74d7ff;
+  --xl-violet: #a78bfa;
+  --xl-ink: #ebe0c5;
+  --xl-muted: #9a8f78;
+  --xl-dim: #5f5768;
+  --xl-line: rgba(212, 175, 55, 0.18);
+  --xl-shadow: 0 24px 80px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 235, 170, 0.04);
+  --xl-ease: cubic-bezier(.2,.85,.22,1);
+  font-family: 'Noto Serif SC', 'Microsoft YaHei', serif;
+}
+
+body { background: var(--xl-bg); }
+
+.xl-shell {
+  min-height: 100dvh;
+  color: var(--xl-ink);
+  background: var(--xl-bg);
+  font-family: 'Noto Serif SC', 'Microsoft YaHei', serif;
+  display: grid;
+  grid-template-columns: 292px minmax(0, 1fr);
+  overflow: hidden;
+}
+
+.xl-bg,
+.xl-bg > div { position: fixed; inset: 0; pointer-events: none; }
+.xl-bg { z-index: 0; background:
+  radial-gradient(circle at 50% -10%, rgba(116, 20, 20, 0.34), transparent 38%),
+  radial-gradient(circle at 80% 20%, rgba(77, 38, 123, 0.24), transparent 42%),
+  linear-gradient(145deg, #020104 0%, #050817 42%, #10060a 100%);
+}
+.xl-bg__scales { opacity: .2; background-image:
+  radial-gradient(circle at 0 0, transparent 9px, rgba(212,175,55,.12) 10px, transparent 11px),
+  radial-gradient(circle at 14px 14px, transparent 9px, rgba(80,12,24,.28) 10px, transparent 11px);
+  background-size: 28px 28px;
+  mix-blend-mode: screen;
+}
+.xl-bg__embers { background-image:
+  radial-gradient(circle at 10% 70%, rgba(212,175,55,.8) 0 1px, transparent 2px),
+  radial-gradient(circle at 38% 22%, rgba(255,91,91,.8) 0 1px, transparent 2px),
+  radial-gradient(circle at 74% 48%, rgba(116,215,255,.7) 0 1px, transparent 2px),
+  radial-gradient(circle at 88% 82%, rgba(212,175,55,.6) 0 1px, transparent 2px);
+  animation: xl-ember-drift 12s linear infinite;
+}
+.xl-bg__mist { background:
+  radial-gradient(ellipse at 50% 100%, rgba(2, 22, 28, .65), transparent 56%),
+  linear-gradient(0deg, rgba(0,0,0,.45), transparent 45%);
+  animation: xl-mist 18s var(--xl-ease) infinite alternate;
+}
+
+.xl-sidebar {
+  position: relative;
+  z-index: 2;
+  min-height: 100dvh;
+  padding: 26px 18px;
+  border-right: 1px solid var(--xl-line);
+  background: linear-gradient(180deg, rgba(12,8,20,.92), rgba(4,2,7,.86));
+  box-shadow: 18px 0 60px rgba(0,0,0,.35);
+}
+
+.xl-brand { display: flex; gap: 14px; align-items: center; padding: 8px 8px 26px; }
+.xl-brand__mark { width: 54px; height: 54px; display: grid; place-items: center; border: 1px solid var(--xl-gold-soft); border-radius: 50%; color: var(--xl-gold); box-shadow: 0 0 28px rgba(212,175,55,.18); }
+.xl-brand__mark svg { width: 31px; height: 31px; fill: none; stroke: currentColor; stroke-width: 1.35; }
+.xl-brand__eyebrow, .xl-kicker, .xl-section-heading p { margin: 0; color: var(--xl-muted); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; }
+.xl-brand h1 { margin: 1px 0 0; font-size: 30px; line-height: 1; letter-spacing: .16em; color: var(--xl-gold); }
+.xl-brand span { color: var(--xl-muted); font-size: 12px; letter-spacing: .1em; }
+
+.xl-nav-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.xl-nav-button {
+  width: 100%; min-height: 58px; display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px; border-radius: 8px; border: 1px solid transparent;
+  background: transparent; color: var(--xl-muted); text-align: left; position: relative; overflow: hidden;
+}
+.xl-nav-button::after, .xl-shine::after { content: ''; position: absolute; inset: 0; transform: translateX(-120%); background: linear-gradient(90deg, transparent, rgba(255,235,170,.16), transparent); transition: transform .65s var(--xl-ease); }
+.xl-nav-button:hover::after, .xl-nav-button.is-active::after { transform: translateX(120%); }
+.xl-nav-button:hover, .xl-nav-button.is-active { color: var(--xl-ink); border-color: var(--xl-gold-soft); background: linear-gradient(135deg, rgba(212,175,55,.13), rgba(139,92,246,.06)); box-shadow: 0 12px 34px rgba(0,0,0,.22); }
+.xl-nav-button .xl-icon { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.55; flex: 0 0 auto; }
+.xl-nav-button strong { display: block; font-size: 14px; letter-spacing: .08em; }
+.xl-nav-button small { display: block; margin-top: 2px; font-size: 11px; color: var(--xl-dim); }
+
+.xl-sidebar-alert { margin-top: 24px; padding: 16px; border: 1px solid rgba(196,59,59,.36); border-radius: 8px; background: linear-gradient(145deg, rgba(86,12,20,.24), rgba(212,175,55,.05)); color: var(--xl-muted); display: grid; gap: 8px; }
+.xl-sidebar-alert .xl-icon { width: 24px; height: 24px; color: var(--xl-blood-strong); fill: none; stroke: currentColor; stroke-width: 1.7; }
+.xl-sidebar-alert strong { color: var(--xl-blood-strong); }
+.xl-sidebar-alert button, .xl-action-list button, .xl-setting-row button, .xl-inline-warning {
+  min-height: 42px; border: 1px solid var(--xl-gold-soft); border-radius: 7px; background: rgba(212,175,55,.08); color: var(--xl-ink); cursor: pointer; transition: transform .2s var(--xl-ease), border-color .2s, box-shadow .2s;
+}
+.xl-sidebar-alert button:hover, .xl-action-list button:hover, .xl-setting-row button:hover, .xl-inline-warning:hover { transform: translateY(-2px); border-color: var(--xl-gold); box-shadow: 0 0 22px rgba(212,175,55,.16); }
+
+.xl-main { position: relative; z-index: 1; min-width: 0; height: 100dvh; overflow: auto; padding: 30px 42px 56px; }
+.xl-topbar { display: flex; justify-content: space-between; gap: 28px; align-items: flex-start; margin-bottom: 24px; }
+.xl-topbar h2 { margin: 4px 0 0; font-size: clamp(28px, 4vw, 48px); letter-spacing: .12em; color: var(--xl-gold); text-shadow: 0 0 38px rgba(212,175,55,.2); }
+.xl-topbar__status { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; max-width: 560px; }
+.xl-topbar__status span { border: 1px solid var(--xl-line); background: rgba(8,5,15,.72); padding: 7px 12px; border-radius: 999px; color: var(--xl-muted); font-size: 12px; }
+.xl-topbar__status .is-danger { color: var(--xl-blood-strong); border-color: rgba(255,91,91,.35); }
+
+.xl-panel { animation: xl-fade-up .42s var(--xl-ease); }
+.xl-section-heading { display: flex; align-items: end; justify-content: space-between; gap: 18px; margin-bottom: 18px; }
+.xl-section-heading h3 { margin: 2px 0 0; font-size: 24px; letter-spacing: .08em; }
+
+.xl-character-grid { display: grid; grid-template-columns: repeat(4, minmax(210px, 1fr)); gap: 16px; }
+.xl-character-card, .xl-inventory-card, .xl-record-card, .xl-setting-row, .xl-panel {
+  position: relative; border: 1px solid var(--xl-line); border-radius: 8px;
+  background: linear-gradient(145deg, rgba(20,14,32,.82), rgba(6,4,12,.78));
+  box-shadow: var(--xl-shadow); overflow: hidden;
+}
+.xl-character-card { padding: 18px; min-height: 528px; transition: transform .28s var(--xl-ease), border-color .28s, box-shadow .28s; }
+.xl-character-card::before, .xl-panel::before, .xl-modal::before, .xl-drawer::before { content: ''; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; background: linear-gradient(135deg, rgba(255,236,174,.13), transparent 28%, transparent 72%, rgba(212,175,55,.1)); opacity: .75; }
+.xl-character-card:hover { transform: translateY(-6px); border-color: var(--seal-color); box-shadow: 0 26px 80px rgba(0,0,0,.52), 0 0 32px color-mix(in srgb, var(--seal-color), transparent 70%); }
+.xl-character-card.is-risk { border-color: rgba(255,91,91,.42); animation: xl-risk-pulse 2.8s ease-in-out infinite; }
+.xl-card-hit { position: absolute; inset: 0; border: 0; background: transparent; cursor: pointer; z-index: 2; }
+.xl-character-card__header { display: flex; gap: 12px; align-items: center; position: relative; z-index: 3; }
+.xl-seal { width: 48px; height: 48px; border: 1px solid currentColor; border-radius: 50%; display: grid; place-items: center; color: var(--seal-color); font-size: 21px; font-weight: 900; box-shadow: 0 0 24px color-mix(in srgb, var(--seal-color), transparent 70%); }
+.xl-character-card h4, .xl-inventory-card h4, .xl-record-card h4, .xl-setting-row h4 { margin: 0; font-size: 20px; letter-spacing: .08em; }
+.xl-character-card p { margin: 4px 0 0; color: var(--xl-muted); }
+.xl-status-chip { margin-left: auto; padding: 4px 9px; border-radius: 999px; border: 1px solid rgba(66,217,156,.3); color: var(--xl-jade); font-size: 12px; }
+.xl-status-chip.is-danger { color: var(--xl-blood-strong); border-color: rgba(255,91,91,.4); }
+.xl-meta-list { margin: 18px 0; display: grid; gap: 10px; position: relative; z-index: 3; }
+.xl-meta-list div, .xl-modal dl div { border-left: 2px solid var(--xl-gold-soft); padding-left: 10px; }
+.xl-meta-list dt, .xl-modal dt { color: var(--xl-dim); font-size: 12px; }
+.xl-meta-list dd, .xl-modal dd { margin: 2px 0 0; color: var(--xl-ink); font-size: 13px; line-height: 1.7; }
+.xl-attrs { display: grid; gap: 10px; position: relative; z-index: 3; }
+.xl-attr { display: grid; grid-template-columns: 42px 1fr 30px; align-items: center; gap: 9px; font-size: 12px; color: var(--xl-muted); }
+.xl-attr__bar { height: 8px; border-radius: 999px; background: rgba(255,255,255,.06); overflow: hidden; }
+.xl-attr__bar i { display: block; height: 100%; border-radius: inherit; animation: xl-breathe 2.8s ease-in-out infinite; }
+.tone-gold { background: linear-gradient(90deg, #8a651c, #f7d57e); }
+.tone-jade { background: linear-gradient(90deg, #167348, #42d99c); }
+.tone-ice { background: linear-gradient(90deg, #257b9d, #74d7ff); }
+.tone-violet { background: linear-gradient(90deg, #5b3fcf, #a78bfa); }
+.tone-blood { background: linear-gradient(90deg, #6b121b, #ff5b5b); }
+.tone-amber { background: linear-gradient(90deg, #8a4d0c, #ffc86b); }
+.xl-character-card footer { position: relative; z-index: 3; margin-top: 18px; display: grid; gap: 10px; }
+.xl-inline-warning { position: relative; z-index: 4; color: var(--xl-blood-strong); display: inline-flex; align-items: center; gap: 7px; width: max-content; padding: 0 12px; }
+.xl-inline-warning .xl-icon { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; }
+
+.xl-map-panel { padding: 22px; }
+.xl-map-heading { align-items: center; }
+.xl-segmented { display: flex; padding: 4px; border: 1px solid var(--xl-line); border-radius: 999px; background: rgba(3,1,5,.55); }
+.xl-segmented button, .xl-record-tabs button { border: 0; border-radius: 999px; padding: 10px 16px; background: transparent; color: var(--xl-muted); cursor: pointer; }
+.xl-segmented button.is-active, .xl-record-tabs button.is-active { color: var(--xl-gold); background: rgba(212,175,55,.12); box-shadow: inset 0 0 0 1px var(--xl-gold-soft); }
+.xl-map-stage { position: relative; min-height: 610px; border: 1px solid var(--xl-gold-soft); border-radius: 8px; overflow: hidden; background:
+  radial-gradient(circle at 50% 48%, rgba(80,67,28,.16), transparent 35%),
+  radial-gradient(circle at 45% 72%, rgba(0, 30, 40, .52), transparent 44%),
+  linear-gradient(140deg, rgba(10,8,16,.88), rgba(5,4,9,.94));
+}
+.xl-map-stage.is-micro { background:
+  radial-gradient(ellipse at 28% 66%, rgba(94,66,30,.22), transparent 28%),
+  radial-gradient(ellipse at 70% 34%, rgba(20,4,14,.7), transparent 28%),
+  linear-gradient(150deg, rgba(16,13,18,.9), rgba(3,8,11,.96)); }
+.xl-star-lines { position: absolute; inset: 0; width: 100%; height: 100%; }
+.xl-star-lines path, .xl-skill-lines path { fill: none; stroke: rgba(212,175,55,.38); stroke-width: .35; stroke-dasharray: 4 5; animation: xl-dash 12s linear infinite; filter: drop-shadow(0 0 4px rgba(212,175,55,.4)); }
+.xl-map-watermark { position: absolute; right: 28px; bottom: 18px; color: rgba(212,175,55,.08); font-size: 68px; font-weight: 900; letter-spacing: .18em; }
+.xl-map-node { position: absolute; transform: translate(-50%, -50%); min-width: 120px; border: 0; background: transparent; color: var(--xl-ink); display: grid; place-items: center; gap: 5px; cursor: pointer; }
+.xl-map-node__icon { width: 43px; height: 43px; padding: 8px; border: 1px solid var(--xl-gold-soft); border-radius: 50%; background: rgba(4,2,8,.72); fill: none; stroke: var(--xl-gold); stroke-width: 1.35; box-shadow: 0 0 24px rgba(212,175,55,.18); transition: transform .28s var(--xl-ease), box-shadow .28s; }
+.xl-map-node:hover .xl-map-node__icon { transform: scale(1.12) rotate(8deg); box-shadow: 0 0 36px rgba(212,175,55,.34); }
+.xl-map-node span { padding: 3px 8px; border: 1px solid rgba(212,175,55,.22); border-radius: 999px; background: rgba(0,0,0,.55); font-size: 12px; white-space: nowrap; }
+.kind-rift .xl-map-node__icon, .kind-danger .xl-map-node__icon { stroke: var(--xl-blood-strong); border-color: rgba(255,91,91,.38); box-shadow: 0 0 32px rgba(255,91,91,.22); }
+.kind-city .xl-map-node__icon { stroke: var(--xl-jade); }
+.kind-relic .xl-map-node__icon { stroke: var(--xl-ice); }
+.xl-token { --token-index: 0; position: absolute; left: calc(50% + (var(--token-index) * 18px)); top: calc(50% - 48px); width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--token-color); color: var(--token-color); background: rgba(0,0,0,.78); font-style: normal; font-weight: 900; font-size: 12px; box-shadow: 0 0 18px color-mix(in srgb, var(--token-color), transparent 60%); animation: xl-token-float 2.6s ease-in-out infinite; }
+.xl-map-legend { display: flex; gap: 14px; flex-wrap: wrap; padding-top: 16px; color: var(--xl-muted); }
+.xl-map-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.xl-map-legend .xl-icon { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+
+.xl-skill-board { position: relative; min-height: 560px; border: 1px solid var(--xl-line); border-radius: 8px; background: linear-gradient(145deg, rgba(15,11,26,.78), rgba(3,1,6,.84)); overflow: hidden; }
+.xl-skill-lines { position: absolute; inset: 0; width: 100%; height: 100%; }
+.xl-skill-node { position: absolute; transform: translate(-50%, -50%); width: 184px; min-height: 112px; border: 1px solid var(--xl-gold-soft); border-radius: 8px; background: rgba(10,7,18,.82); color: var(--xl-ink); display: grid; gap: 5px; justify-items: start; padding: 14px; cursor: pointer; box-shadow: var(--xl-shadow); transition: transform .25s var(--xl-ease), border-color .25s; }
+.xl-skill-node:hover { transform: translate(-50%, -50%) translateY(-6px); border-color: var(--xl-gold); }
+.xl-skill-node .xl-icon { width: 24px; height: 24px; fill: none; stroke: var(--xl-gold); stroke-width: 1.5; }
+.xl-skill-node span { color: var(--xl-muted); font-size: 12px; }
+.xl-skill-node i, .xl-modal-progress i { height: 5px; border-radius: 999px; background: linear-gradient(90deg, var(--xl-violet), var(--xl-gold)); display: block; }
+
+.xl-inventory-grid, .xl-settings-grid { display: grid; grid-template-columns: repeat(4, minmax(190px, 1fr)); gap: 16px; }
+.xl-inventory-card, .xl-setting-row { padding: 18px; min-height: 236px; transition: transform .25s var(--xl-ease), border-color .25s; }
+.xl-inventory-card:hover, .xl-setting-row:hover, .xl-record-card:hover { transform: translateY(-4px); border-color: var(--xl-gold-soft); }
+.xl-inventory-card .xl-icon { width: 32px; height: 32px; fill: none; stroke: var(--xl-gold); stroke-width: 1.4; }
+.xl-inventory-card p, .xl-record-card p, .xl-setting-row p { color: var(--xl-muted); line-height: 1.75; }
+.xl-inventory-card footer { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 16px; }
+.xl-inventory-card footer span, .xl-inventory-card footer strong, .xl-inventory-card footer em { font-size: 12px; border: 1px solid var(--xl-line); border-radius: 999px; padding: 4px 8px; font-style: normal; color: var(--xl-muted); }
+.xl-empty-lore { margin-top: 16px; padding: 14px 18px; border: 1px dashed rgba(255,91,91,.28); color: var(--xl-muted); background: rgba(86,12,20,.08); }
+
+.xl-record-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.xl-record-list { display: grid; gap: 12px; }
+.xl-record-card { padding: 18px 20px; transition: transform .25s var(--xl-ease), border-color .25s; }
+.xl-record-card span { color: var(--xl-gold); font-size: 12px; letter-spacing: .1em; }
+.xl-record-card.tone-danger { border-color: rgba(255,91,91,.32); }
+.xl-record-card.tone-warning { border-color: rgba(212,175,55,.3); }
+.xl-setting-row header { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.xl-setting-row strong { color: var(--xl-gold); font-size: 13px; }
+.xl-setting-row button { padding: 0 14px; }
+
+.xl-drawer { position: fixed; z-index: 20; right: 0; top: 0; bottom: 0; width: min(460px, 92vw); padding: 38px 30px; border-left: 1px solid var(--xl-gold-soft); background: linear-gradient(180deg, rgba(15,11,26,.97), rgba(4,2,8,.98)); box-shadow: -30px 0 90px rgba(0,0,0,.56); animation: xl-slide-in .34s var(--xl-ease); overflow-y: auto; }
+.xl-drawer__seal { width: 74px; height: 74px; border: 1px solid currentColor; border-radius: 50%; display: grid; place-items: center; font-size: 34px; font-weight: 900; margin-bottom: 20px; box-shadow: 0 0 34px currentColor; }
+.xl-drawer h3, .xl-modal h3 { margin: 4px 0 8px; font-size: 30px; color: var(--xl-gold); }
+.xl-drawer p, .xl-modal p { color: var(--xl-muted); line-height: 1.85; }
+.xl-drawer section { margin-top: 22px; }
+.xl-drawer h4 { color: var(--xl-ink); margin-bottom: 8px; }
+.xl-bond { display: inline-block; margin: 0 8px 8px 0; padding: 7px 10px; border: 1px solid var(--xl-line); border-radius: 999px; color: var(--xl-muted); }
+.xl-close { position: absolute; top: 16px; right: 16px; width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid var(--xl-line); border-radius: 50%; background: rgba(0,0,0,.2); color: var(--xl-muted); cursor: pointer; }
+.xl-close svg, .xl-toast button svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+.xl-close:hover { color: var(--xl-gold); border-color: var(--xl-gold-soft); }
+
+.xl-modal-backdrop { position: fixed; z-index: 30; inset: 0; display: grid; place-items: center; padding: 24px; background: rgba(0,0,0,.62); backdrop-filter: blur(10px); animation: xl-fade .18s ease-out; }
+.xl-modal { position: relative; width: min(680px, 94vw); max-height: 86vh; overflow-y: auto; border: 1px solid var(--xl-gold-soft); border-radius: 10px; background: linear-gradient(160deg, rgba(20,14,32,.98), rgba(6,4,11,.98)); padding: 34px; box-shadow: 0 34px 120px rgba(0,0,0,.7), 0 0 44px rgba(212,175,55,.12); animation: xl-modal-in .26s var(--xl-ease); }
+.xl-modal dl { display: grid; gap: 10px; margin: 18px 0; }
+.xl-action-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 10px; margin-top: 18px; }
+.xl-action-list button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 12px; }
+.xl-action-list .xl-icon { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.xl-modal-progress { display: grid; gap: 8px; margin-top: 18px; }
+.xl-modal-progress { color: var(--xl-muted); }
+
+.xl-toast-stack { position: fixed; z-index: 40; right: 24px; top: 22px; display: grid; gap: 10px; width: min(420px, calc(100vw - 36px)); }
+.xl-toast { display: grid; grid-template-columns: 28px 1fr 34px; gap: 12px; align-items: start; padding: 14px; border: 1px solid var(--xl-line); border-radius: 8px; background: rgba(12,8,20,.94); box-shadow: 0 18px 54px rgba(0,0,0,.45); animation: xl-toast-in .28s var(--xl-ease); }
+.xl-toast.tone-danger { border-color: rgba(255,91,91,.42); }
+.xl-toast.tone-warning { border-color: rgba(212,175,55,.38); }
+.xl-toast .xl-icon { width: 24px; height: 24px; fill: none; stroke: var(--xl-gold); stroke-width: 1.5; }
+.xl-toast.tone-danger .xl-icon { stroke: var(--xl-blood-strong); }
+.xl-toast strong { color: var(--xl-ink); }
+.xl-toast p { margin: 3px 0 0; color: var(--xl-muted); line-height: 1.55; font-size: 13px; }
+.xl-toast button { border: 0; background: transparent; color: var(--xl-muted); cursor: pointer; }
+
+@keyframes xl-fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes xl-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes xl-modal-in { from { opacity: 0; transform: translateY(18px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes xl-slide-in { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@keyframes xl-toast-in { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes xl-breathe { 0%,100% { filter: brightness(.85); } 50% { filter: brightness(1.25); } }
+@keyframes xl-risk-pulse { 0%,100% { box-shadow: var(--xl-shadow); } 50% { box-shadow: var(--xl-shadow), 0 0 36px rgba(255,91,91,.22); } }
+@keyframes xl-dash { to { stroke-dashoffset: -90; } }
+@keyframes xl-token-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes xl-ember-drift { from { transform: translateY(0); } to { transform: translateY(-32px); } }
+@keyframes xl-mist { from { opacity: .72; transform: translateX(-1%); } to { opacity: 1; transform: translateX(1%); } }
+
+@media (max-width: 1180px) {
+  .xl-shell { grid-template-columns: 92px minmax(0, 1fr); }
+  .xl-brand div:not(.xl-brand__mark), .xl-nav-button small, .xl-nav-button strong, .xl-sidebar-alert span, .xl-sidebar-alert strong { display: none; }
+  .xl-sidebar-alert { padding: 12px; justify-items: center; }
+  .xl-sidebar-alert button { font-size: 0; width: 44px; padding: 0; }
+  .xl-character-grid, .xl-inventory-grid, .xl-settings-grid { grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+}
+
+@media (max-width: 760px) {
+  .xl-shell { display: block; }
+  .xl-sidebar { position: sticky; top: 0; min-height: auto; padding: 12px; z-index: 10; border-right: 0; border-bottom: 1px solid var(--xl-line); }
+  .xl-brand { padding-bottom: 10px; }
+  .xl-nav-list { grid-template-columns: repeat(3, 1fr); }
+  .xl-nav-button { justify-content: center; min-height: 48px; }
+  .xl-sidebar-alert { display: none; }
+  .xl-main { height: auto; min-height: 100dvh; padding: 20px 14px 36px; }
+  .xl-topbar { display: block; }
+  .xl-topbar__status { justify-content: flex-start; margin-top: 14px; }
+  .xl-character-grid, .xl-inventory-grid, .xl-settings-grid { grid-template-columns: 1fr; }
+  .xl-map-stage { min-height: 520px; }
+  .xl-map-watermark { font-size: 38px; }
+  .xl-map-node { min-width: 92px; }
+  .xl-skill-node { width: 142px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+}

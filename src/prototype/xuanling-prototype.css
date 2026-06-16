@@ -633,3 +633,32 @@ body { background: var(--xl-bg); }
 .xl-variable-grid .tone-amber strong { color: #ffc86b; }
 @media (max-width: 1240px) { .xl-tavern-grid { grid-template-columns: 1fr; } .xl-tavern-output { min-height: auto; } }
 @media (max-width: 760px) { .xl-output-bottom, .xl-variable-grid { grid-template-columns: 1fr; } .xl-tavern-preset { justify-items: start; } }
+
+
+.xl-api-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+  border: 1px solid var(--xl-line);
+  border-radius: 999px;
+  padding: 4px 9px;
+  color: var(--xl-muted);
+  font-size: 11px;
+  font-style: normal;
+}
+.xl-api-status.is-llm { color: var(--xl-jade); border-color: rgba(66, 217, 156, .35); }
+.xl-api-status.is-fallback { color: #ffc86b; border-color: rgba(255, 200, 107, .35); }
+.xl-save-line {
+  position: relative;
+  z-index: 1;
+  margin: 10px 0 0;
+  color: var(--xl-muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.xl-command-actions button:disabled {
+  opacity: .58;
+  cursor: wait;
+  transform: none;
+}

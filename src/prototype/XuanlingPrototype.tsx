@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   characters,
   inventory,
@@ -46,6 +46,10 @@ type ModalState =
   | null;
 
 type ToastItem = { id: number; title: string; body: string; tone: 'info' | 'warning' | 'danger' };
+
+type TavernOutputState = typeof tavernOutput;
+type TavernVariableState = typeof tavernVariables;
+type GameGenerateResponse = { ok: boolean; source: 'llm' | 'fallback'; output: TavernOutputState; worldState: { variables: TavernVariableState }; session: { id: string; updatedAt: number } };
 
 const navItems: Array<{ id: PanelId; label: string; desc: string; Icon: typeof IconRebirth }> = [
   { id: 'status', label: '轮回者状态', desc: '四主角监控', Icon: IconRebirth },
@@ -239,6 +243,11 @@ function StatusPanel({ onOpenCharacter, onWarn }: { onOpenCharacter: (c: Charact
                 </div>
               ))}
             </div>
+            <section className="xl-card-cultivation" aria-label={`${char.name}功法技能与物品`}>
+              <strong>{char.cultivation}</strong>
+              <div>{char.combatSkills.map((skill) => <span key={skill}>{skill}</span>)}</div>
+              <div>{char.bagItems.map((item) => <em key={item}>{item}</em>)}</div>
+            </section>
             <footer>
               <p>{char.quote}</p>
               {char.status !== '稳定' && (
@@ -370,6 +379,39 @@ function RecordsPanel({ tab, setTab, onOpenRecord }: { tab: string; setTab: (tab
 }
 
 function TavernPanel({ input, setInput, onToast }: { input: string; setInput: (value: string) => void; onToast: (title: string, body: string, tone: ToastItem['tone']) => void }) {
+  const [output, setOutput] = useState<TavernOutputState>(tavernOutput);
+  const [variables, setVariables] = useState<TavernVariableState>(tavernVariables);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [backendSource, setBackendSource] = useState<'llm' | 'fallback' | 'idle'>('idle');
+  const [lastSavedAt, setLastSavedAt] = useState<string>('尚未写入');
+
+  const generateNext = async () => {
+    if (!input.trim() || isGenerating) return;
+    setIsGenerating(true);
+    try {
+      const response = await fetch('/api/game/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ input, sessionId }),
+      });
+      const data = await response.json() as Partial<GameGenerateResponse> & { error?: string; detail?: string };
+      if (!response.ok || !data.output || !data.worldState || !data.session || !data.source) {
+        throw new Error(data.error || data.detail || '后端推演失败');
+      }
+      setOutput(data.output);
+      setVariables(data.worldState.variables);
+      setSessionId(data.session.id);
+      setBackendSource(data.source);
+      setLastSavedAt(new Date(data.session.updatedAt).toLocaleString('zh-CN'));
+      onToast(data.source === 'llm' ? 'API 推演完成' : '本地回退推演完成', `存档已写入 data/chats/${data.session.id}.json`, data.source === 'llm' ? 'info' : 'warning');
+    } catch (error) {
+      onToast('推演接口异常', (error as Error).message, 'danger');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   return (
     <section className="xl-panel xl-tavern-panel" aria-labelledby="tavern-panel-title">
       <div className="xl-section-heading xl-tavern-heading">
@@ -380,6 +422,7 @@ function TavernPanel({ input, setInput, onToast }: { input: string; setInput: (v
         <div className="xl-tavern-preset" aria-label="当前预设">
           <span>{tavernPreset.mode}</span>
           <strong>{tavernPreset.name}</strong>
+          <em className={`xl-api-status is-${backendSource}`}>{backendSource === 'llm' ? 'API 已接入' : backendSource === 'fallback' ? '本地数据库回退' : '等待后端连接'}</em>
         </div>
       </div>
 
@@ -424,25 +467,25 @@ function TavernPanel({ input, setInput, onToast }: { input: string; setInput: (v
           </div>
           <article className="xl-output-block tone-thinking">
             <span className="xl-tag-label">thinking</span>
-            <p>{tavernOutput.thinking}</p>
+            <p>{output.thinking}</p>
           </article>
           <article className="xl-output-block tone-maintext">
             <span className="xl-tag-label">maintext</span>
-            <p>{tavernOutput.maintext}</p>
+            <p>{output.maintext}</p>
           </article>
           <article className="xl-output-block tone-option">
             <span className="xl-tag-label">option</span>
             <div className="xl-option-list">
-              {tavernOutput.options.map((option, index) => (
-                <button id={`btn-tavern-option-${index + 1}`} key={option} type="button" onClick={() => onToast('选项已写入', option, 'warning')}>
+              {output.options.map((option, index) => (
+                <button id={`btn-tavern-option-${index + 1}`} key={option} type="button" onClick={() => { setInput(option); onToast('选项已写入输入框', option, 'warning'); }}>
                   <IconChevron className="xl-icon" />{option}
                 </button>
               ))}
             </div>
           </article>
           <div className="xl-output-bottom">
-            <article className="xl-output-block tone-sum"><span className="xl-tag-label">sum</span><p>{tavernOutput.sum}</p></article>
-            <article className="xl-output-block tone-vars"><span className="xl-tag-label">vars</span>{tavernOutput.vars.map((item) => <code key={item}>{item}</code>)}</article>
+            <article className="xl-output-block tone-sum"><span className="xl-tag-label">sum</span><p>{output.sum}</p></article>
+            <article className="xl-output-block tone-vars"><span className="xl-tag-label">vars</span>{output.vars.map((item) => <code key={item}>{item}</code>)}</article>
           </div>
         </section>
 
@@ -452,17 +495,18 @@ function TavernPanel({ input, setInput, onToast }: { input: string; setInput: (v
             <h4>玩家指令</h4>
             <textarea id="input-tavern-command" value={input} onChange={(event) => setInput(event.target.value)} aria-label="玩家推演指令" />
             <div className="xl-command-actions">
-              <button id="btn-tavern-send" type="button" onClick={() => onToast('生成下一幕', '前端原型已模拟写入 maintext / option / vars 结构。', 'info')}>生成下一幕</button>
-              <button id="btn-tavern-branch" type="button" onClick={() => onToast('分支推演', '已创建一条前端分支记录，可用于后续接入多会话存档。', 'warning')}>分支推演</button>
-              <button id="btn-tavern-rollback" type="button" onClick={() => onToast('回滚上一层', '已模拟截断最近一轮推演，变量面板保持当前快照。', 'danger')}>回滚上一层</button>
+              <button id="btn-tavern-send" type="button" disabled={isGenerating} onClick={generateNext}>{isGenerating ? '推演中' : '生成下一幕'}</button>
+              <button id="btn-tavern-branch" type="button" onClick={() => onToast('分支推演', sessionId ? `当前存档：${sessionId}` : '首次生成后将自动创建后端存档。', 'warning')}>分支推演</button>
+              <button id="btn-tavern-rollback" type="button" onClick={() => onToast('回滚上一层', '后端已具备存档文件，下一步可接入按消息截断的回滚接口。', 'danger')}>回滚上一层</button>
             </div>
+            <p className="xl-save-line">存档：{sessionId ?? '待创建'} · 最近写入：{lastSavedAt}</p>
           </article>
 
           <article className="xl-tavern-card">
             <p className="xl-kicker">Variables</p>
             <h4>世界变量快照</h4>
             <div className="xl-variable-grid">
-              {tavernVariables.map((item) => (
+              {variables.map((item) => (
                 <div key={item.id} className={`tone-${item.tone}`}>
                   <span>{item.name}</span><strong>{item.value}</strong>
                 </div>
@@ -506,6 +550,9 @@ function CharacterDrawer({ character, onClose }: { character: CharacterProfile; 
       <p>{character.quote}</p>
       <section><h4>前世宿命</h4><p>{character.fate}</p></section>
       <section><h4>风险链路</h4><p>{character.risk}</p></section>
+      <section><h4>所修功法</h4><p>{character.cultivation}</p></section>
+      <section><h4>已显技能</h4>{character.combatSkills.map((skill) => <span className="xl-bond" key={skill}>{skill}</span>)}</section>
+      <section><h4>随身物品</h4>{character.bagItems.map((item) => <span className="xl-bond xl-bond--item" key={item}>{item}</span>)}</section>
       <section><h4>近期因果</h4>{character.bonds.map((bond) => <span className="xl-bond" key={bond}>{bond}</span>)}</section>
     </aside>
   );

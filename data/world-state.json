@@ -1,0 +1,45 @@
+{
+    "id":  "xuanling-yuanjitian",
+    "updatedAt":  0,
+    "loop":  "第九次",
+    "variables":  [
+                      {
+                          "tone":  "blood",
+                          "name":  "黑海侵蚀率",
+                          "id":  "var-corruption",
+                          "value":  "67%"
+                      },
+                      {
+                          "tone":  "gold",
+                          "name":  "轮回序列",
+                          "id":  "var-loop",
+                          "value":  "第九次"
+                      },
+                      {
+                          "tone":  "ice",
+                          "name":  "叶汐澜神识锚",
+                          "id":  "var-anchor",
+                          "value":  "松动"
+                      },
+                      {
+                          "tone":  "violet",
+                          "name":  "楚凌霜命盘火漆",
+                          "id":  "var-fatewax",
+                          "value":  "半裂"
+                      },
+                      {
+                          "tone":  "jade",
+                          "name":  "荒骨城防线",
+                          "id":  "var-bonecity",
+                          "value":  "暂稳"
+                      },
+                      {
+                          "tone":  "amber",
+                          "name":  "下一次黑潮",
+                          "id":  "var-tide",
+                          "value":  "两刻后"
+                      }
+                  ],
+    "location":  "元极天·荒骨城外城",
+    "corruption":  67
+}

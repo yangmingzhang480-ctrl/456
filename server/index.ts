@@ -14,6 +14,7 @@ import { lorebookRouter } from './routes/lorebooks.js';
 import { presetRouter } from './routes/presets.js';
 import { settingsRouter } from './routes/settings.js';
 import { dataRouter } from './routes/data.js';
+import { gameRouter } from './routes/game.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -30,6 +31,7 @@ app.use('/api/lorebooks', lorebookRouter);
 app.use('/api/presets', presetRouter);
 app.use('/api/settings', settingsRouter);
 app.use('/api/data', dataRouter);
+app.use('/api/game', gameRouter);
 
 // Health check
 app.get('/api/health', (_req, res) => {

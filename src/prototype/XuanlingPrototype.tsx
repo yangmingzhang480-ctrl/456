@@ -7,6 +7,10 @@ import {
   records,
   settingRows,
   skills,
+  tavernLorebooks,
+  tavernOutput,
+  tavernPreset,
+  tavernVariables,
   type CharacterProfile,
   type InventoryItem,
   type MapNode,
@@ -32,7 +36,7 @@ import {
   IconWarning,
 } from './XuanlingIcons';
 
-type PanelId = 'status' | 'map' | 'skills' | 'inventory' | 'records' | 'settings';
+type PanelId = 'status' | 'tavern' | 'map' | 'skills' | 'inventory' | 'records' | 'settings';
 type MapMode = 'macro' | 'micro';
 type ModalState =
   | { type: 'node'; item: MapNode }
@@ -45,6 +49,7 @@ type ToastItem = { id: number; title: string; body: string; tone: 'info' | 'warn
 
 const navItems: Array<{ id: PanelId; label: string; desc: string; Icon: typeof IconRebirth }> = [
   { id: 'status', label: '轮回者状态', desc: '四主角监控', Icon: IconRebirth },
+  { id: 'tavern', label: '酒馆主控', desc: '角色卡与世界书', Icon: IconBell },
   { id: 'map', label: '玄灵舆图', desc: '双轨战略图', Icon: IconMap },
   { id: 'skills', label: '天机缘法', desc: '修行技能树', Icon: IconSkill },
   { id: 'inventory', label: '须弥纳戒', desc: '法宝与残卷', Icon: IconInventory },
@@ -67,11 +72,11 @@ function HeroScene() {
     <section className="xl-hero-scene" aria-labelledby="hero-scene-title">
       <div className="xl-hero-scene__image" aria-hidden="true" />
       <div className="xl-hero-scene__content">
-        <p className="xl-kicker">?? RPG ????</p>
-        <h3 id="hero-scene-title">???????</h3>
-        <p>????????????????????????????????????????????????? LLM ????????</p>
-        <div className="xl-hero-scene__chips" aria-label="?????">
-          <span>???</span><span>???</span><span>?????</span><span>????</span><span>????</span>
+        <p className="xl-kicker">SILLYTAVERN RPG 主控台</p>
+        <h3 id="hero-scene-title">玄灵界·元极天</h3>
+        <p>四名轮回者在黑海侵蚀下分散行动，玩家通过酒馆化主控台调度角色卡、世界书、变量、技能树与战术舆图，驱动 LLM 进行下一幕推演。</p>
+        <div className="xl-hero-scene__chips" aria-label="酒馆化能力">
+          <span>角色卡</span><span>世界书</span><span>结构化选项</span><span>变量状态</span><span>分支推演</span>
         </div>
       </div>
     </section>
@@ -113,6 +118,7 @@ export default function XuanlingPrototype() {
   const [drawerCharacter, setDrawerCharacter] = useState<CharacterProfile | null>(null);
   const [modal, setModal] = useState<ModalState>(null);
   const [recordTab, setRecordTab] = useState<'全部' | '轮回秘录' | '侵蚀情报' | '据点纪要' | '天机缘法'>('全部');
+  const [tavernInput, setTavernInput] = useState('前往黑海裂隙第三层，尝试拉回叶汐澜的神识锚点。');
   const [toasts, setToasts] = useState<ToastItem[]>([
     { id: 1, title: '黑海潮汐预警', body: '元极天边境出现第三次暗潮回卷，请优先查看玄灵舆图。', tone: 'warning' },
   ]);
@@ -181,6 +187,7 @@ export default function XuanlingPrototype() {
 
         {activePanel === 'status' && <HeroScene />}
         {activePanel === 'status' && <StatusPanel onOpenCharacter={setDrawerCharacter} onWarn={showToast} />}
+        {activePanel === 'tavern' && <TavernPanel input={tavernInput} setInput={setTavernInput} onToast={showToast} />}
         {activePanel === 'map' && <MapPanel mode={mapMode} setMode={setMapMode} onOpenNode={(item) => setModal({ type: 'node', item })} />}
         {activePanel === 'skills' && <SkillPanel onOpenSkill={(item) => setModal({ type: 'skill', item })} />}
         {activePanel === 'inventory' && <InventoryPanel onOpenItem={(item) => setModal({ type: 'item', item })} />}
@@ -215,8 +222,8 @@ function StatusPanel({ onOpenCharacter, onWarn }: { onOpenCharacter: (c: Charact
               <span className={`xl-status-chip ${char.status !== '稳定' ? 'is-danger' : ''}`}>{char.status}</span>
             </header>
             <figure className="xl-character-portrait">
-              <img src={char.portrait.src} alt={`${char.name}????`} style={{ objectPosition: char.portrait.position, transform: `scale(${char.portrait.scale})` }} />
-              <figcaption>{char.name} ? {char.cultivation}</figcaption>
+              <img src={char.portrait.src} alt={`${char.name}人物立绘`} style={{ objectPosition: char.portrait.position, transform: `scale(${char.portrait.scale})` }} />
+              <figcaption>{char.name} · {char.cultivation}</figcaption>
             </figure>
             <dl className="xl-meta-list">
               <div><dt>前世宿命</dt><dd>{char.fate}</dd></div>
@@ -362,6 +369,112 @@ function RecordsPanel({ tab, setTab, onOpenRecord }: { tab: string; setTab: (tab
   );
 }
 
+function TavernPanel({ input, setInput, onToast }: { input: string; setInput: (value: string) => void; onToast: (title: string, body: string, tone: ToastItem['tone']) => void }) {
+  return (
+    <section className="xl-panel xl-tavern-panel" aria-labelledby="tavern-panel-title">
+      <div className="xl-section-heading xl-tavern-heading">
+        <div>
+          <p>SillyTavern GameView</p>
+          <h3 id="tavern-panel-title">酒馆化推演主控台</h3>
+        </div>
+        <div className="xl-tavern-preset" aria-label="当前预设">
+          <span>{tavernPreset.mode}</span>
+          <strong>{tavernPreset.name}</strong>
+        </div>
+      </div>
+
+      <div className="xl-tavern-grid">
+        <aside className="xl-tavern-side" aria-label="角色卡与世界书">
+          <article className="xl-tavern-card xl-tavern-card--character">
+            <p className="xl-kicker">Character Cards</p>
+            <h4>轮回者角色卡</h4>
+            <div className="xl-tavern-roster">
+              {characters.map((char) => (
+                <button
+                  id={`btn-tavern-character-${char.id}`}
+                  key={char.id}
+                  type="button"
+                  onClick={() => onToast(`${char.name}角色卡`, `${char.cultivation}、${char.realm}、当前位置：${char.location}`, char.status === '稳定' ? 'info' : 'warning')}
+                  style={{ '--token-color': char.color } as React.CSSProperties}
+                >
+                  <i>{char.seal}</i><span>{char.name}</span><em>{char.status}</em>
+                </button>
+              ))}
+            </div>
+          </article>
+
+          <article className="xl-tavern-card">
+            <p className="xl-kicker">Lorebooks</p>
+            <h4>激活世界书</h4>
+            <div className="xl-lorebook-list">
+              {tavernLorebooks.map((book) => (
+                <button id={`btn-lorebook-${book.id}`} key={book.id} type="button" onClick={() => onToast(book.name, book.content, 'info')}>
+                  <strong>{book.name}</strong>
+                  <span>触发词：{book.trigger}</span>
+                  <em>优先级 {book.priority}</em>
+                </button>
+              ))}
+            </div>
+          </article>
+        </aside>
+
+        <section className="xl-tavern-output" aria-label="LLM 推演输出">
+          <div className="xl-output-toolbar">
+            {tavernPreset.tags.map((tag) => <span key={tag}>{tag}</span>)}
+          </div>
+          <article className="xl-output-block tone-thinking">
+            <span className="xl-tag-label">thinking</span>
+            <p>{tavernOutput.thinking}</p>
+          </article>
+          <article className="xl-output-block tone-maintext">
+            <span className="xl-tag-label">maintext</span>
+            <p>{tavernOutput.maintext}</p>
+          </article>
+          <article className="xl-output-block tone-option">
+            <span className="xl-tag-label">option</span>
+            <div className="xl-option-list">
+              {tavernOutput.options.map((option, index) => (
+                <button id={`btn-tavern-option-${index + 1}`} key={option} type="button" onClick={() => onToast('选项已写入', option, 'warning')}>
+                  <IconChevron className="xl-icon" />{option}
+                </button>
+              ))}
+            </div>
+          </article>
+          <div className="xl-output-bottom">
+            <article className="xl-output-block tone-sum"><span className="xl-tag-label">sum</span><p>{tavernOutput.sum}</p></article>
+            <article className="xl-output-block tone-vars"><span className="xl-tag-label">vars</span>{tavernOutput.vars.map((item) => <code key={item}>{item}</code>)}</article>
+          </div>
+        </section>
+
+        <aside className="xl-tavern-command" aria-label="玩家输入与变量">
+          <article className="xl-tavern-card">
+            <p className="xl-kicker">Prompt Composer</p>
+            <h4>玩家指令</h4>
+            <textarea id="input-tavern-command" value={input} onChange={(event) => setInput(event.target.value)} aria-label="玩家推演指令" />
+            <div className="xl-command-actions">
+              <button id="btn-tavern-send" type="button" onClick={() => onToast('生成下一幕', '前端原型已模拟写入 maintext / option / vars 结构。', 'info')}>生成下一幕</button>
+              <button id="btn-tavern-branch" type="button" onClick={() => onToast('分支推演', '已创建一条前端分支记录，可用于后续接入多会话存档。', 'warning')}>分支推演</button>
+              <button id="btn-tavern-rollback" type="button" onClick={() => onToast('回滚上一层', '已模拟截断最近一轮推演，变量面板保持当前快照。', 'danger')}>回滚上一层</button>
+            </div>
+          </article>
+
+          <article className="xl-tavern-card">
+            <p className="xl-kicker">Variables</p>
+            <h4>世界变量快照</h4>
+            <div className="xl-variable-grid">
+              {tavernVariables.map((item) => (
+                <div key={item.id} className={`tone-${item.tone}`}>
+                  <span>{item.name}</span><strong>{item.value}</strong>
+                </div>
+              ))}
+            </div>
+          </article>
+        </aside>
+      </div>
+    </section>
+  );
+}
+
 function SettingsPanel({ onToast }: { onToast: (title: string, body: string, tone: ToastItem['tone']) => void }) {
   return (
     <section className="xl-panel" aria-labelledby="settings-panel-title">
@@ -384,7 +497,7 @@ function CharacterDrawer({ character, onClose }: { character: CharacterProfile; 
     <aside className="xl-drawer" aria-label={`${character.name}角色详情`}>
       <button id="btn-close-character-drawer" className="xl-close" type="button" onClick={onClose} aria-label="关闭角色详情"><IconClose /></button>
       <figure className="xl-drawer-portrait">
-        <img src={character.portrait.src} alt={`${character.name}????`} style={{ objectPosition: character.portrait.position, transform: `scale(${character.portrait.scale})` }} />
+        <img src={character.portrait.src} alt={`${character.name}人物立绘`} style={{ objectPosition: character.portrait.position, transform: `scale(${character.portrait.scale})` }} />
       </figure>
       <div className="xl-drawer__seal" style={{ color: character.color }}>{character.seal}</div>
       <p className="xl-kicker">轮回者详情</p>

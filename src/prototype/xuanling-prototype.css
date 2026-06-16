@@ -581,3 +581,55 @@ body { background: var(--xl-bg); }
   .xl-hero-scene__image { background-position: center top; }
   .xl-character-portrait { height: 220px; }
 }
+
+
+/* ===== Tavernlike/SillyTavern control loop ===== */
+.xl-tavern-panel { padding: 22px; }
+.xl-tavern-heading { align-items: center; }
+.xl-tavern-preset { display: grid; justify-items: end; gap: 3px; color: var(--xl-muted); }
+.xl-tavern-preset span { font-size: 11px; letter-spacing: .16em; color: var(--xl-violet); text-transform: uppercase; }
+.xl-tavern-preset strong { color: var(--xl-gold); font-size: 14px; }
+.xl-tavern-grid { display: grid; grid-template-columns: minmax(240px, .82fr) minmax(360px, 1.35fr) minmax(270px, .9fr); gap: 16px; align-items: start; }
+.xl-tavern-side, .xl-tavern-command { display: grid; gap: 14px; }
+.xl-tavern-card, .xl-tavern-output { position: relative; border: 1px solid var(--xl-line); border-radius: 8px; background: linear-gradient(145deg, rgba(16, 11, 25, .86), rgba(5, 3, 9, .78)); box-shadow: var(--xl-shadow); overflow: hidden; }
+.xl-tavern-card { padding: 16px; }
+.xl-tavern-card::before, .xl-tavern-output::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(135deg, rgba(212, 175, 55, .13), transparent 30%, rgba(116, 215, 255, .05)); }
+.xl-tavern-card h4 { margin: 5px 0 14px; font-size: 18px; letter-spacing: .08em; color: var(--xl-ink); }
+.xl-tavern-roster, .xl-lorebook-list, .xl-option-list, .xl-command-actions { display: grid; gap: 9px; }
+.xl-tavern-roster button, .xl-lorebook-list button, .xl-option-list button, .xl-command-actions button { position: relative; z-index: 1; border: 1px solid var(--xl-line); border-radius: 7px; background: rgba(0, 0, 0, .2); color: var(--xl-ink); cursor: pointer; transition: transform .22s var(--xl-ease), border-color .22s, box-shadow .22s; }
+.xl-tavern-roster button:hover, .xl-lorebook-list button:hover, .xl-option-list button:hover, .xl-command-actions button:hover { transform: translateY(-2px); border-color: var(--xl-gold-soft); box-shadow: 0 0 24px rgba(212, 175, 55, .12); }
+.xl-tavern-roster button { min-height: 48px; display: grid; grid-template-columns: 32px 1fr auto; gap: 9px; align-items: center; padding: 8px 10px; text-align: left; }
+.xl-tavern-roster i { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--token-color); color: var(--token-color); font-style: normal; font-weight: 900; box-shadow: 0 0 18px color-mix(in srgb, var(--token-color), transparent 62%); }
+.xl-tavern-roster em, .xl-lorebook-list em { color: var(--xl-muted); font-size: 12px; font-style: normal; }
+.xl-lorebook-list button { padding: 12px; text-align: left; }
+.xl-lorebook-list strong, .xl-lorebook-list span { display: block; }
+.xl-lorebook-list span { margin-top: 5px; color: var(--xl-muted); font-size: 12px; line-height: 1.65; }
+.xl-tavern-output { min-height: 704px; padding: 16px; }
+.xl-output-toolbar { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+.xl-output-toolbar span, .xl-tag-label { border: 1px solid var(--xl-gold-soft); border-radius: 999px; color: var(--xl-gold); background: rgba(212, 175, 55, .08); font-size: 11px; letter-spacing: .08em; padding: 4px 8px; }
+.xl-output-block { position: relative; z-index: 1; border: 1px solid rgba(212, 175, 55, .16); border-radius: 8px; background: rgba(3, 1, 6, .45); padding: 14px; margin-bottom: 12px; }
+.xl-output-block p { color: var(--xl-muted); line-height: 1.9; margin: 10px 0 0; }
+.xl-output-block.tone-maintext { background: linear-gradient(145deg, rgba(212, 175, 55, .08), rgba(3, 1, 6, .46)); border-color: rgba(212, 175, 55, .26); }
+.xl-output-block.tone-thinking { border-color: rgba(167, 139, 250, .28); }
+.xl-output-block.tone-option { border-color: rgba(116, 215, 255, .25); }
+.xl-option-list { margin-top: 12px; }
+.xl-option-list button { min-height: 46px; display: flex; align-items: center; gap: 8px; padding: 10px 12px; text-align: left; }
+.xl-option-list .xl-icon { width: 15px; height: 15px; fill: none; stroke: var(--xl-gold); stroke-width: 1.7; flex: 0 0 auto; }
+.xl-output-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.xl-output-block code { display: block; margin-top: 8px; color: var(--xl-jade); font-family: 'Noto Serif SC', 'Microsoft YaHei', serif; font-size: 12px; }
+.xl-tavern-command textarea { position: relative; z-index: 1; width: 100%; min-height: 154px; resize: vertical; box-sizing: border-box; border: 1px solid var(--xl-gold-soft); border-radius: 8px; background: rgba(0, 0, 0, .28); color: var(--xl-ink); padding: 12px; line-height: 1.8; font-family: inherit; outline: none; }
+.xl-tavern-command textarea:focus { border-color: var(--xl-gold); box-shadow: 0 0 0 3px rgba(212, 175, 55, .08); }
+.xl-command-actions { grid-template-columns: 1fr; margin-top: 10px; }
+.xl-command-actions button { min-height: 42px; }
+.xl-variable-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+.xl-variable-grid div { border: 1px solid var(--xl-line); border-radius: 7px; background: rgba(0, 0, 0, .18); padding: 10px; min-height: 62px; display: grid; align-content: center; gap: 4px; }
+.xl-variable-grid span { color: var(--xl-muted); font-size: 12px; }
+.xl-variable-grid strong { font-size: 16px; }
+.xl-variable-grid .tone-gold strong { color: var(--xl-gold); }
+.xl-variable-grid .tone-jade strong { color: var(--xl-jade); }
+.xl-variable-grid .tone-ice strong { color: var(--xl-ice); }
+.xl-variable-grid .tone-violet strong { color: var(--xl-violet); }
+.xl-variable-grid .tone-blood strong { color: var(--xl-blood-strong); }
+.xl-variable-grid .tone-amber strong { color: #ffc86b; }
+@media (max-width: 1240px) { .xl-tavern-grid { grid-template-columns: 1fr; } .xl-tavern-output { min-height: auto; } }
+@media (max-width: 760px) { .xl-output-bottom, .xl-variable-grid { grid-template-columns: 1fr; } .xl-tavern-preset { justify-items: start; } }

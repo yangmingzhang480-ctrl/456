@@ -84,9 +84,9 @@ export const characters: CharacterProfile[] = [
     portrait: { src: '/assets/xuanling-party-reference.jpg', position: '50% 72%', scale: 1.2 },
     quote: '剑心尚明，黑海未能覆其本真。',
     risk: '灵力过载时会触发前世剑意回潮。',
-    cultivation: '??????',
-    combatSkills: ['????', '????', '????'],
-    bagItems: ['????', '????', '?????'],
+    cultivation: '太虚九转剑经',
+    combatSkills: ['太虚剑心', '星河断因', '轮回照影'],
+    bagItems: ['星河残印', '太虚剑穗', '荒骨城防令'],
     attributes: [
       { key: '肉身', value: 78, max: 100, tone: 'gold' },
       { key: '灵力', value: 92, max: 100, tone: 'violet' },
@@ -111,9 +111,9 @@ export const characters: CharacterProfile[] = [
     portrait: { src: '/assets/xuanling-party-reference.jpg', position: '51% 25%', scale: 1.28 },
     quote: '山纹入骨，万劫不折。',
     risk: '若离开神山灵脉太久，肉身山纹会出现裂化。',
-    cultivation: '?????',
-    combatSkills: ['????', '????', '????'],
-    bagItems: ['????', '????', '????'],
+    cultivation: '山纹不灭体',
+    combatSkills: ['镇岳护阵', '玄岩反震', '太古山息'],
+    bagItems: ['神山石符', '护阵铜令', '灵脉测尺'],
     attributes: [
       { key: '肉身', value: 95, max: 100, tone: 'gold' },
       { key: '灵力', value: 55, max: 100, tone: 'violet' },
@@ -138,9 +138,9 @@ export const characters: CharacterProfile[] = [
     portrait: { src: '/assets/xuanling-party-reference.jpg', position: '18% 51%', scale: 1.38 },
     quote: '她听见裂隙深处有人以旧名呼唤。',
     risk: '黑海侵蚀值已越过警戒线，需立刻回收神识锚点。',
-    cultivation: '?????',
-    combatSkills: ['????', '????', '????'],
-    bagItems: ['?????', '????', '????'],
+    cultivation: '冰魄照海诀',
+    combatSkills: ['冰魄照海', '裂隙回声', '神识锚定'],
+    bagItems: ['裂隙镇魂针', '冰魄残镜', '净魂玉匣'],
     attributes: [
       { key: '肉身', value: 30, max: 100, tone: 'gold' },
       { key: '灵力', value: 98, max: 100, tone: 'violet' },
@@ -165,9 +165,9 @@ export const characters: CharacterProfile[] = [
     portrait: { src: '/assets/xuanling-party-reference.jpg', position: '78% 48%', scale: 1.34 },
     quote: '她的命盘有一半被暗红火漆封死。',
     risk: '因果链正在向黑海侵蚀区偏移。',
-    cultivation: '????',
-    combatSkills: ['????', '????', '????'],
-    bagItems: ['????', '????', '?????'],
+    cultivation: '弑神命刃',
+    combatSkills: ['命盘斩线', '血影追索', '封火破禁'],
+    bagItems: ['命盘火漆', '血影短刃', '天机阁封签'],
     attributes: [
       { key: '肉身', value: 65, max: 100, tone: 'gold' },
       { key: '灵力', value: 75, max: 100, tone: 'violet' },
@@ -223,3 +223,50 @@ export const settingRows = [
   { id: 'setting-parser', name: '标签解析', value: 'maintext / option / vars', desc: '原型展示 LLM 游戏结构化输出入口。' },
   { id: 'setting-safety', name: '前端边界', value: '仅原型', desc: '本界面不新增后端，不保存真实密钥。' },
 ];
+
+
+export interface TavernLorebook {
+  id: string;
+  name: string;
+  trigger: string;
+  priority: number;
+  content: string;
+}
+
+export interface TavernVariable {
+  id: string;
+  name: string;
+  value: string;
+  tone: 'gold' | 'jade' | 'ice' | 'violet' | 'blood' | 'amber';
+}
+
+export const tavernLorebooks: TavernLorebook[] = [
+  { id: 'lore-blacksea', name: '世界书：元极天黑海侵蚀', trigger: '黑海、裂隙、侵蚀、天魔', priority: 92, content: '黑海并非海洋，而是被天道剥离后的命格暗流。进入裂隙者会听见前世旧名，若回应三次，因果锚点将被黑海反向锁定。' },
+  { id: 'lore-party', name: '世界书：四象轮回者关系网', trigger: '陆星遥、李明远、叶汐澜、楚凌霜', priority: 88, content: '四名主角分别承接星、山、汐、霜四枚轮回印。分散行动时可提高探索效率，但黑海会优先切断风险最高者的救援链路。' },
+  { id: 'lore-bonecity', name: '世界书：荒骨城防线', trigger: '荒骨城、骨塔、城防令', priority: 74, content: '荒骨城由远古巨兽骸骨筑成，三座骨塔可短时稳定裂隙潮汐，但每次启动都会消耗城下灵脉。' },
+];
+
+export const tavernPreset = {
+  name: '玄灵界末日修仙 RPG',
+  mode: 'GameView',
+  tags: ['thinking', 'maintext', 'option', 'sum', 'vars'],
+  temperature: '0.82',
+  context: '角色卡 + 世界书 + 变量状态 + 最近三轮卷宗',
+};
+
+export const tavernVariables: TavernVariable[] = [
+  { id: 'var-corruption', name: '黑海侵蚀率', value: '67%', tone: 'blood' },
+  { id: 'var-loop', name: '轮回序列', value: '第九次', tone: 'gold' },
+  { id: 'var-anchor', name: '叶汐澜神识锚', value: '松动', tone: 'ice' },
+  { id: 'var-fatewax', name: '楚凌霜命盘火漆', value: '半裂', tone: 'violet' },
+  { id: 'var-bonecity', name: '荒骨城防线', value: '暂稳', tone: 'jade' },
+  { id: 'var-tide', name: '下一次黑潮', value: '两刻后', tone: 'amber' },
+];
+
+export const tavernOutput = {
+  thinking: '系统判定：叶汐澜神识锚点正在被黑海第三层反向牵引；若陆星遥单独入裂隙，前世剑意可短时斩断回声，但会暴露星河残印。',
+  maintext: '荒骨城外，墨蓝色云墙压低到城楼上方。陆星遥掌心的星河残印灼痛，远处黑海裂隙像一枚缓慢睁开的眼。李明远守住太虚剑碑，山纹沿臂骨亮起；楚凌霜的命盘火漆裂开半寸，血色细光指向同一个方向。',
+  options: ['调度陆星遥进入黑海裂隙，强行回收叶汐澜神识锚', '命令李明远启动太虚剑碑，先稳住荒骨城外城防线', '让楚凌霜解开一层命盘封印，以血影追索裂隙源头', '消耗星河残印，锁定一次不被黑海篡改的关键选择'],
+  sum: '上一幕总结：四名轮回者已分散至荒骨城、太虚剑碑、黑海裂隙与血影沼泽。黑海侵蚀率上升至 67%，裂隙回声开始模拟主角团旧友声音。',
+  vars: ['black_sea_corruption=67', 'yexilan_anchor=loose', 'chulingshuang_fatewax=half_cracked', 'bone_city_defense=stable'],
+};

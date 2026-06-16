@@ -61,6 +61,52 @@ function nodeIcon(kind: MapNode['kind']) {
   return IconArray;
 }
 
+
+function HeroScene() {
+  return (
+    <section className="xl-hero-scene" aria-labelledby="hero-scene-title">
+      <div className="xl-hero-scene__image" aria-hidden="true" />
+      <div className="xl-hero-scene__content">
+        <p className="xl-kicker">?? RPG ????</p>
+        <h3 id="hero-scene-title">???????</h3>
+        <p>????????????????????????????????????????????????? LLM ????????</p>
+        <div className="xl-hero-scene__chips" aria-label="?????">
+          <span>???</span><span>???</span><span>?????</span><span>????</span><span>????</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function InkTerrain({ mode }: { mode: MapMode }) {
+  if (mode === 'macro') {
+    return (
+      <svg className="xl-ink-terrain" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <filter id="xl-ink-blur"><feGaussianBlur stdDeviation="7" /></filter>
+          <linearGradient id="xl-realm-wash" x1="0" x2="1"><stop stopColor="#d8c7a0" stopOpacity=".16"/><stop offset="1" stopColor="#526074" stopOpacity=".08"/></linearGradient>
+        </defs>
+        <path className="wash" d="M40 420C160 260 260 300 340 180C450 30 580 120 660 230C740 338 880 250 970 390V620H40Z" />
+        <path className="mountain" d="M20 470C120 330 200 390 300 250C420 80 560 170 630 280C700 390 860 330 980 450" />
+        <path className="cloud" d="M90 170C210 110 310 140 420 105C570 58 700 105 850 78" />
+        <path className="cloud cloud-2" d="M130 520C280 470 390 510 520 455C660 398 790 430 930 374" />
+        <path className="blacksea" d="M0 390C170 430 250 360 390 410C520 458 620 382 760 440C850 478 940 470 1000 430V620H0Z" />
+      </svg>
+    );
+  }
+  return (
+    <svg className="xl-ink-terrain" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true">
+      <defs><filter id="xl-river-blur"><feGaussianBlur stdDeviation="4" /></filter></defs>
+      <path className="wash" d="M0 470C130 400 190 450 280 340C390 205 520 230 610 330C710 440 830 360 1000 470V620H0Z" />
+      <path className="ridge" d="M70 340C150 210 250 250 330 130C420 0 550 90 610 190C700 330 830 250 950 350" />
+      <path className="river" d="M780 0C700 120 730 220 640 310C535 415 380 370 270 500C220 558 210 600 205 620" />
+      <path className="city-wall" d="M250 385h170v80H250zM280 355h35v30M355 345h38v40" />
+      <path className="rift-mark" d="M705 130l-55 135 66-27-42 150 105-202-72 31 42-87Z" />
+      <path className="forest" d="M105 445c30-72 68-72 98 0M140 455c22-52 48-52 70 0M835 435c24-62 62-62 88 0" />
+    </svg>
+  );
+}
+
 export default function XuanlingPrototype() {
   const [activePanel, setActivePanel] = useState<PanelId>('status');
   const [mapMode, setMapMode] = useState<MapMode>('macro');
@@ -133,6 +179,7 @@ export default function XuanlingPrototype() {
           </div>
         </header>
 
+        {activePanel === 'status' && <HeroScene />}
         {activePanel === 'status' && <StatusPanel onOpenCharacter={setDrawerCharacter} onWarn={showToast} />}
         {activePanel === 'map' && <MapPanel mode={mapMode} setMode={setMapMode} onOpenNode={(item) => setModal({ type: 'node', item })} />}
         {activePanel === 'skills' && <SkillPanel onOpenSkill={(item) => setModal({ type: 'skill', item })} />}
@@ -167,6 +214,10 @@ function StatusPanel({ onOpenCharacter, onWarn }: { onOpenCharacter: (c: Charact
               </div>
               <span className={`xl-status-chip ${char.status !== '稳定' ? 'is-danger' : ''}`}>{char.status}</span>
             </header>
+            <figure className="xl-character-portrait">
+              <img src={char.portrait.src} alt={`${char.name}????`} style={{ objectPosition: char.portrait.position, transform: `scale(${char.portrait.scale})` }} />
+              <figcaption>{char.name} ? {char.cultivation}</figcaption>
+            </figure>
             <dl className="xl-meta-list">
               <div><dt>前世宿命</dt><dd>{char.fate}</dd></div>
               <div><dt>当前境界</dt><dd>{char.realm}</dd></div>
@@ -332,6 +383,9 @@ function CharacterDrawer({ character, onClose }: { character: CharacterProfile; 
   return (
     <aside className="xl-drawer" aria-label={`${character.name}角色详情`}>
       <button id="btn-close-character-drawer" className="xl-close" type="button" onClick={onClose} aria-label="关闭角色详情"><IconClose /></button>
+      <figure className="xl-drawer-portrait">
+        <img src={character.portrait.src} alt={`${character.name}????`} style={{ objectPosition: character.portrait.position, transform: `scale(${character.portrait.scale})` }} />
+      </figure>
       <div className="xl-drawer__seal" style={{ color: character.color }}>{character.seal}</div>
       <p className="xl-kicker">轮回者详情</p>
       <h3>{character.name}</h3>

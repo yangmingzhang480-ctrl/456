@@ -18,8 +18,12 @@ export interface CharacterProfile {
   status: '稳定' | '危险' | '失联' | '侵蚀';
   title: string;
   color: string;
+  portrait: { src: string; position: string; scale: number };
   quote: string;
   risk: string;
+  cultivation: string;
+  combatSkills: string[];
+  bagItems: string[];
   attributes: AttributeValue[];
   bonds: string[];
 }
@@ -77,8 +81,12 @@ export const characters: CharacterProfile[] = [
     status: '稳定',
     title: '太虚剑宗真传',
     color: '#d4af37',
+    portrait: { src: '/assets/xuanling-party-reference.jpg', position: '50% 72%', scale: 1.2 },
     quote: '剑心尚明，黑海未能覆其本真。',
     risk: '灵力过载时会触发前世剑意回潮。',
+    cultivation: '??????',
+    combatSkills: ['????', '????', '????'],
+    bagItems: ['????', '????', '?????'],
     attributes: [
       { key: '肉身', value: 78, max: 100, tone: 'gold' },
       { key: '灵力', value: 92, max: 100, tone: 'violet' },
@@ -100,8 +108,12 @@ export const characters: CharacterProfile[] = [
     status: '稳定',
     title: '太虚剑宗外门长老',
     color: '#2ecc71',
+    portrait: { src: '/assets/xuanling-party-reference.jpg', position: '51% 25%', scale: 1.28 },
     quote: '山纹入骨，万劫不折。',
     risk: '若离开神山灵脉太久，肉身山纹会出现裂化。',
+    cultivation: '?????',
+    combatSkills: ['????', '????', '????'],
+    bagItems: ['????', '????', '????'],
     attributes: [
       { key: '肉身', value: 95, max: 100, tone: 'gold' },
       { key: '灵力', value: 55, max: 100, tone: 'violet' },
@@ -123,8 +135,12 @@ export const characters: CharacterProfile[] = [
     status: '危险',
     title: '太虚剑宗真传首席',
     color: '#74d7ff',
+    portrait: { src: '/assets/xuanling-party-reference.jpg', position: '18% 51%', scale: 1.38 },
     quote: '她听见裂隙深处有人以旧名呼唤。',
     risk: '黑海侵蚀值已越过警戒线，需立刻回收神识锚点。',
+    cultivation: '?????',
+    combatSkills: ['????', '????', '????'],
+    bagItems: ['?????', '????', '????'],
     attributes: [
       { key: '肉身', value: 30, max: 100, tone: 'gold' },
       { key: '灵力', value: 98, max: 100, tone: 'violet' },
@@ -146,8 +162,12 @@ export const characters: CharacterProfile[] = [
     status: '侵蚀',
     title: '散修剑道天才',
     color: '#a78bfa',
+    portrait: { src: '/assets/xuanling-party-reference.jpg', position: '78% 48%', scale: 1.34 },
     quote: '她的命盘有一半被暗红火漆封死。',
     risk: '因果链正在向黑海侵蚀区偏移。',
+    cultivation: '????',
+    combatSkills: ['????', '????', '????'],
+    bagItems: ['????', '????', '?????'],
     attributes: [
       { key: '肉身', value: 65, max: 100, tone: 'gold' },
       { key: '灵力', value: 75, max: 100, tone: 'violet' },
